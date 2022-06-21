@@ -32,7 +32,7 @@ const diagnoseController = {
     },
     get: async(req,res) => {
         try {
-            const diagnose = await Diagnose.findOne({_id: req.params.id})
+            const diagnose = await Diagnose.findOne({_id: req.params.id}).populate("situationId").populate("treatment")
             res.status(200).json(diagnose)
         } catch (error) {
             res.status(500).json(`Error: ${error}`)
@@ -43,9 +43,9 @@ const diagnoseController = {
             const situationId = req.query.situationId 
             let diagnose 
             if(situationId){
-                diagnose = await Diagnose.find({situationId: situationId})
+                diagnose = await Diagnose.find({situationId: situationId}).populate("treatment").populate("situationId")
             }else{
-                diagnose = await Diagnose.find({})
+                diagnose = await Diagnose.find({}).populate("treatment").populate("situationId")
             }
             res.status(200).json(diagnose)
         } catch (error) {

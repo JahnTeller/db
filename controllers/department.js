@@ -39,7 +39,7 @@ const departmentController = {
     },
     getAll: async(req,res) => {
         try {
-            const departments = await Department.find()
+            const departments = await Department.find().populate("situation")
             res.status(200).json(departments)
         } catch (error) {
             res.status(500).json(`Error ${error}`)
