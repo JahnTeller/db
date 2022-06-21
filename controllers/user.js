@@ -1,6 +1,7 @@
 const User = require("../models/user")
 const generateToken = require("../utils/generateToken");
-
+const Department = require("../models/department")
+const Situation = require("../models/situation")
 const userController = {
     login: async(req,res) => {
         try {
@@ -49,6 +50,29 @@ const userController = {
             res.status(500).json(`Error ${error}`)
         }
     },
+    getByRole: async(req,res) => {
+        try {
+            const user = req.user
+            const role = user.role
+            const  isAdmin = user.isAdmin
+            let department 
+            let situation 
+            if(isAdmin){
+                department = await Department.find()
+                situation = await Situation.find()
+            }
+            else{
+                department = await Department.find({name: role})
+                situation = await Situation.find({departmentId: department._id})
+            }
+            res.status(200).json({
+                department,
+                situation
+            })
+        } catch (error) {
+            res.status(500).json(`Error ${error}`)
+        }
+    }
 }
 
 module.exports = userController

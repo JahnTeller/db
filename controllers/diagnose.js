@@ -40,12 +40,12 @@ const diagnoseController = {
     },
     getAll: async(req,res) => {
         try {   
-            const situationId = req.query.situationId || undefined
+            const situationId = req.query.situationId 
             let diagnose 
             if(situationId){
                 diagnose = await Diagnose.find({situationId: situationId})
             }else{
-                diagnose = await Diagnose.find()
+                diagnose = await Diagnose.find({})
             }
             res.status(200).json(diagnose)
         } catch (error) {
