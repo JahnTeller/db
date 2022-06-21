@@ -1,9 +1,9 @@
 const router = require("express").Router()
 const controller = require("../controllers/treatment")
-
-router.post("/", controller.create)
-router.put("/:id", controller.edit)
-router.delete("/:id", controller.del)
+const { verifyAdmin, verifyToken } = require("../middlewares/middleware")
+router.post("/",verifyToken, verifyAdmin, controller.create)
+router.put("/:id",verifyToken, verifyAdmin, controller.edit)
+router.delete("/:id",verifyToken, verifyAdmin, controller.del)
 router.get("/:id", controller.get)
 // router.get("/diagnose/:id", controller.getByDiagnose)
 router.get("/", controller.getAll)

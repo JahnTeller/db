@@ -1,10 +1,11 @@
 const router = require("express").Router()
 const controller = require("../controllers/situation")
-router.post("/", controller.create)
-router.put("/:id", controller.edit)
-router.delete("/:id", controller.del)
+const { verifyAdmin, verifyToken} = require("../middlewares/middleware")
+router.post("/",verifyToken, verifyAdmin, controller.create)
+router.put("/:id",verifyToken, verifyAdmin, controller.edit)
+router.delete("/:id",verifyToken, verifyAdmin, controller.del)
+router.get("/department/:id",verifyToken, verifyAdmin, controller.getByDepartment)
 router.get("/:id", controller.get)
-router.get("/department/:id", controller.getByDepartment)
 router.get("/", controller.getAll)
 
 module.exports = router
