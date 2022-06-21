@@ -10,6 +10,7 @@ const treatmentRouter = require("./routes/treatment")
 const diagnoseRouter = require("./routes/diagnose")
 const userRouter = require("./routes/user")
 const connect = require("./config/db")
+const PORT = process.env.PORT || 8000
 app.use(bodyParser.json({ limit: "50mb", strict: false }))
 app.use(
     bodyParser.urlencoded({
@@ -26,6 +27,6 @@ app.use("/api/department", departmentRouter)
 app.use("/api/treatment", treatmentRouter)
 app.use("/api/diagnose", diagnoseRouter)
 app.use("/api/user", userRouter)
-app.listen(4000, () => {
-    console.log(`Server is running in port 4000`)
+app.listen(PORT, () => {
+    console.log(`Server is running in port ${PORT}`)
 })
