@@ -20,6 +20,10 @@ const treatmentSchema = new mongoose.Schema({
     },
     note: {
         type: String,
+    },
+    name: {
+        type: String,
+        required: true
     }
 },{
     timestamps: true
