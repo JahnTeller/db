@@ -33,7 +33,7 @@ const treatmentController = {
     },
     get: async(req,res) => {
         try {
-            const treatment = await Treatment.findOne({_id: req.params.id})
+            const treatment = await Treatment.findOne({_id: req.params.id}).populate("diagnose").populate("situation")
             res.status(200).json(treatment)
         } catch (error) {
             res.status(500).json(`Error ${error}`)
@@ -41,7 +41,7 @@ const treatmentController = {
     },
     getAll: async(req,res) => {
         try {
-            const treatment = await Treatment.find()
+            const treatment = await Treatment.find().populate("diagnose").populate("situation")
             res.status(200).json(treatment)
         } catch (error) {
             res.status(500).json(`Error ${error}`)
