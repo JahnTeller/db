@@ -62,7 +62,7 @@ const userController = {
                 situation = await Situation.find()
             }
             else{
-                department = await Department.find({name: role})
+                department = await Department.findOne({name: role})
                 situation = await Situation.find({departmentId: department._id})
             }
             res.status(200).json({
