@@ -17,7 +17,13 @@ const situationSchema = new mongoose.Schema(
         name: {
             type: String, 
             required: true
-        }
+        },
+        diagnose: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Diagnose"
+            }
+        ]
     },
     {
         timestamps: true
