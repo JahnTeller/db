@@ -40,7 +40,7 @@ const situationController = {
     get: async(req, res) => {
         try {
             const id = req.params.id
-            const situation = await Situation.findOne({_id: id})
+            const situation = await Situation.findOne({_id: id}).populate("departmentId")
             if(!situation){
                 return res.status(404).json("Situation not found")
             }
@@ -65,7 +65,7 @@ const situationController = {
         try {
             const limit = req.query.limit || 10
             const page = req.query.page || 1
-            const situation = await Situation.find().limit(limit)
+            const situation = await Situation.find().limit(limit).populate("departmentId")
             if(!situation){
                 return res.status(400).json("Situation is empty")
             }
