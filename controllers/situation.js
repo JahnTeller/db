@@ -1,5 +1,6 @@
 const Situation = require("../models/situation")
 const Department = require("../models/department")
+const  base64 = require("base-64")
 const situationController = {
     create: async(req, res) => {
         try {
@@ -85,6 +86,26 @@ const situationController = {
             res.status(200).json("success")
         } catch (error) {
             res.status(500).json(`Error ${error}`)            
+        }
+    },
+    search: async(req,res) => {
+        try {
+            const keyword = req.query.keyword.trim()
+            console.log(keyword)
+            const  situation = await Situation.find({name: {$regex: keyword, $options: "i"}})
+            res.status(200).json(situation)
+        } catch (error) {
+            res.status(500).json(`Error :${error}`)
+        }
+    },
+    pagination: async(req, res) => {
+        try {
+            const page = req.params.page || 1
+            let perPage = 16; 
+            const situation = await Situation.find() .skip((perPage * page) - perPage).limit(perPage)
+            res.status(200).json(situation)
+        } catch (error) {
+            res.status(500).json(`Error :${error}`)
         }
     }
 }
