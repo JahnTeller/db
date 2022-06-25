@@ -23,7 +23,11 @@ const situationSchema = new mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Diagnose"
             }
-        ]
+        ],
+        isExam: {
+            type: Boolean, 
+            default: false
+        }
     },
     {
         timestamps: true

@@ -8,6 +8,7 @@ const verifyToken =  async(req,res,next) => {
             return res.status(404).json('Not authorized, no token')
         }
         req.user = await User.findById(decoded.id).select("-password");
+        console.log("helop")
         next();
     }
     else{

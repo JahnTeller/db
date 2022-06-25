@@ -107,6 +107,14 @@ const situationController = {
         } catch (error) {
             res.status(500).json(`Error :${error}`)
         }
+    },
+    submit: async(req,res) => {
+        try {
+            const user = req.user
+            console.log(user)
+        } catch (error) {
+            res.status(500).json(`Error ${error}`)
+        }
     }
 }
 
