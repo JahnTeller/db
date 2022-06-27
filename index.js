@@ -12,7 +12,7 @@ const userRouter = require("./routes/user")
 const markRouter = require("./routes/mark")
 const connect = require("./config/db")
 
-const { createProxyMiddleware } = require('http-proxy-middleware');
+// const { createProxyMiddleware } = require('http-proxy-middleware');
 const PORT = process.env.PORT || 8000
 app.use(bodyParser.json({ limit: "50mb", strict: false }))
 app.use(
@@ -30,14 +30,14 @@ connect()
 //   res.setHeader("Access-Control-Allow-Origin", "*")
 //   next();
 // });\
-app.use('/api', createProxyMiddleware({ 
-    target: `http://localhost:24346/`, //original url
-    changeOrigin: true, 
-    //secure: false,
-    onProxyRes: function (proxyRes, req, res) {
-       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    }
-}));
+// app.use('/api', createProxyMiddleware({ 
+//     target: `http://localhost:24346/`, //original url
+//     changeOrigin: true, 
+//     //secure: false,
+//     onProxyRes: function (proxyRes, req, res) {
+//        proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+//     }
+// }));
 app.use("/api/situation", situationRouter)
 app.use("/api/department", departmentRouter)
 app.use("/api/treatment", treatmentRouter)
