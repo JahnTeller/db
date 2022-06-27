@@ -23,12 +23,11 @@ app.use(
 app.use(cors({ origin: true, credentials: true }));
 app.use(morgan("common"));
 connect()
-
-// app.get("/", (req,res, next) => {
-  // res.header("Access-Control-Allow-Origin", "*");
-//   console.log("hje")
-//   next()
-// })
+app.use(function(req, res, next) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*")
+  next();
+});
 app.use("/api/situation", situationRouter)
 app.use("/api/department", departmentRouter)
 app.use("/api/treatment", treatmentRouter)

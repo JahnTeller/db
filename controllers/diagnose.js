@@ -26,7 +26,6 @@ const diagnoseController = {
     },
     del: async(req,res) => {
         try {
-            res.header("Access-Control-Allow-Origin", "*");
             await Diagnose.findByIdAndDelete(req.params.id)
             await Situation.updateOne({diagnose: req.params.id}, {diagnose: null})
             res.status(200).json("Delete successfully")
