@@ -11,6 +11,8 @@ const diagnoseRouter = require("./routes/diagnose")
 const userRouter = require("./routes/user")
 const markRouter = require("./routes/mark")
 const connect = require("./config/db")
+
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const PORT = process.env.PORT || 8000
 app.use(bodyParser.json({ limit: "50mb", strict: false }))
 app.use(
