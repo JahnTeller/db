@@ -19,6 +19,10 @@ const diagnoseSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
+    isFinish: {
+        type: Boolean,
+        default: false
+    }
 
 },{
     timestamps: true

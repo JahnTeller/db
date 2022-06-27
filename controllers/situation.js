@@ -1,5 +1,6 @@
 const Situation = require("../models/situation")
 const Department = require("../models/department")
+const Mark = require("../models/mark")
 const  base64 = require("base-64")
 const situationController = {
     create: async(req, res) => {
@@ -110,8 +111,20 @@ const situationController = {
     },
     submit: async(req,res) => {
         try {
-            const user = req.user
-            console.log(user)
+            const user = req.user._id
+            // console.log(user)
+            const {mark, situationId} = req.body
+            const newMark = new Mark({
+                userId: user,
+                situation: situationId,
+                mark: mark
+            })
+            const saveMark = await newMark.save()
+            const situation = await Situation.findOne({_id: situationId})
+            const times = situation.times
+            console.log({newMark, times})
+            await situation.updateOne({times: times + 1})
+            res.status(200).json(saveMark)
         } catch (error) {
             res.status(500).json(`Error ${error}`)
         }

@@ -27,6 +27,14 @@ const situationSchema = new mongoose.Schema(
         isExam: {
             type: Boolean, 
             default: false
+        },
+        times: {
+            type: Number, 
+            default: 0
+        },
+        isFinish: {
+            type: Boolean,
+            default: false
         }
     },
     {

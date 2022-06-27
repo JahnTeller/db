@@ -9,6 +9,7 @@ const departmentRouter = require("./routes/department")
 const treatmentRouter = require("./routes/treatment")
 const diagnoseRouter = require("./routes/diagnose")
 const userRouter = require("./routes/user")
+const markRouter = require("./routes/mark")
 const connect = require("./config/db")
 const PORT = process.env.PORT || 8000
 app.use(bodyParser.json({ limit: "50mb", strict: false }))
@@ -27,6 +28,8 @@ app.use("/api/department", departmentRouter)
 app.use("/api/treatment", treatmentRouter)
 app.use("/api/diagnose", diagnoseRouter)
 app.use("/api/user", userRouter)
+app.use("/api/mark", markRouter)
 app.listen(PORT, () => {
     console.log(`Server is running in port ${PORT}`)
 })
+
