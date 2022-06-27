@@ -31,7 +31,7 @@ connect()
 //   next();
 // });\
 app.use('/api', createProxyMiddleware({ 
-    target: `http://localhost:${PORT}/`, //original url
+    target: `http://localhost:24346/`, //original url
     changeOrigin: true, 
     //secure: false,
     onProxyRes: function (proxyRes, req, res) {
