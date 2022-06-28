@@ -6,7 +6,7 @@ const treatmentController = {
         try {
             const treatment = new Treatment(req.body)
             if(req.body.diagnose){
-                await Diagnose.findByIdAndUpdate(req.body.diagnose, { $push: { treatment: treatment._id}})
+                await Diagnose.findByIdAndUpdate(req.body.diagnose, { $push: { $treatment: treatment._id}})
             }
             const newTreatment = await treatment.save()
             res.status(200).json(newTreatment)

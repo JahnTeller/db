@@ -5,7 +5,7 @@ const diagnoseController = {
         try {
             const diagnose = new Diagnose(req.body)
             if(req.body.situationId){
-                await Situation.findByIdAndUpdate(req.body.situationId, {$push: {diagnose: diagnose._id}})
+                await Situation.findByIdAndUpdate(req.body.situationId, {$push: {$diagnose: diagnose._id}})
                 if(req.body.done){
                     await Situation.findByIdAndUpdate(req.body.situationId, { isFinish: true })
                 }

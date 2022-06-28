@@ -10,7 +10,7 @@ const situationController = {
             const newSituation = await situation.save()
             if(req.body.departmentId){ 
                 const department = await Department.findById(req.body.departmentId)
-                await department.updateOne({$push: {situation: newSituation._id}})
+                await department.updateOne({$push: {$situation: newSituation._id}})
                 console.log(department)
             }
             console.log(newSituation)
