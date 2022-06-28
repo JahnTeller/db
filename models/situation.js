@@ -7,12 +7,8 @@ const situationSchema = new mongoose.Schema(
             required: true
         },
         departmentId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.ObjectId,
             ref: "Department"
-        },
-        avarageMark: {
-            type: Number,
-            default: 0 
         },
         name: {
             type: String, 
