@@ -19,7 +19,7 @@ const diagnoseSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
-    isFinish: {
+    isTrue: {
         type: Boolean,
         default: false
     }
