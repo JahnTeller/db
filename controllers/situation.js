@@ -33,7 +33,7 @@ const situationController = {
         try {
             const id = req.params.id
             await Situation.findByIdAndDelete(id)
-            await Department.updateMany({situation: id}, { situation: null})
+            await Department.updateMany({situation: id}, { $pull: {situation: id}})
             res.status(200).json("Delete success")
         } catch (error) {
             res.status(500).json(`Error ${error}`)
