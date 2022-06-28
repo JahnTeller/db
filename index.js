@@ -22,7 +22,8 @@ app.use(
       parameterLimit: 50000,
     })
 );
-app.use(cors({ origin: true, credentials: true }));
+// app.use(cors({ origin: true, credentials: true }));
+app.use(cors());
 app.use(morgan("common"));
 connect()
 app.use("/api/situation", situationRouter)

@@ -6,11 +6,14 @@ const situationController = {
     create: async(req, res) => {
         try {
             const situation = new Situation(req.body)
-            if(req.body.departmentId){ 
-                await Department.findByIdAndUpdate(req.body.departmentId , {$push: {situation: situation._id}})
-            }
+            // console.log(situation)
             const newSituation = await situation.save()
-
+            if(req.body.departmentId){ 
+                const department = await Department.findById(req.body.departmentId)
+                await department.updateOne({$push: {situation: newSituation._id}})
+                console.log(department)
+            }
+            console.log(newSituation)
             res.status(200).json(newSituation)
         } catch (error) {
             res.status(500).json(`Error ${error}`)
