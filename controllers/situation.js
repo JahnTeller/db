@@ -13,7 +13,7 @@ const situationController = {
                 await department.updateOne({$push: {$situation: newSituation._id}})
                 console.log(department)
             }
-            console.log(newSituation)
+            // console.log(newSituation)
             res.status(200).json(newSituation)
         } catch (error) {
             res.status(500).json(`Error ${error}`)

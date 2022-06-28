@@ -4,13 +4,17 @@ const diagnoseController = {
     create: async(req,res) => {
         try {
             const diagnose = new Diagnose(req.body)
+            const newDiagnose = await diagnose.save()
             if(req.body.situationId){
-                await Situation.findByIdAndUpdate(req.body.situationId, {$push: {$diagnose: diagnose._id}})
+                const situation = await Situation.findById( req.body.situationId )
+                // await Situation.findByIdAndUpdate(req.body.situationId, {$push: {$diagnose: diagnose._id}})
+                await situation.updateOne({$push: {$diagnose: diagnose._id}})
+                console.log(situation)
                 if(req.body.done){
-                    await Situation.findByIdAndUpdate(req.body.situationId, { isFinish: true })
+                    // await Situation.findByIdAndUpdate(req.body.situationId, { isFinish: true })
+                    await situation.updateOne({$isFinish: true})
                 }
             }
-            const newDiagnose = await diagnose.save()
             res.status(200).json(newDiagnose)
         } catch (error) {
             res.status(500).json(`Error: ${error}`)
