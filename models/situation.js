@@ -7,7 +7,7 @@ const situationSchema = new mongoose.Schema(
             required: true
         },
         departmentId: {
-            type: mongoose.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Department"
         },
         name: {

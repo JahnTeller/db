@@ -6,14 +6,12 @@ const situationController = {
     create: async(req, res) => {
         try {
             const situation = new Situation(req.body)
-            // console.log(situation)
             const newSituation = await situation.save()
             if(req.body.departmentId){ 
                 const department = await Department.findById(req.body.departmentId)
-                await department.updateOne({$push: {$situation: newSituation._id}})
-                console.log(department)
+                // await Department.findByIdAndUpdate(req.body.departmentId, {$push: { $situation: newSituation._id}})
+                await department.updateOne({$push: {situation: newSituation._id}})
             }
-            // console.log(newSituation)
             res.status(200).json(newSituation)
         } catch (error) {
             res.status(500).json(`Error ${error}`)
@@ -57,7 +55,7 @@ const situationController = {
     getByDepartment: async(req, res) => {
         try {
             const idDepart = req.params.id
-            const situation = await Situation.find({departmentId: idDepart}).populate("departmentId")
+            const situation = await Situation.find({departmentId: idDepart}).populate("departmentId").populate("diagnose")
             if(!situation){
                 return res.status(404).json("Situation not found")
             }
@@ -70,7 +68,7 @@ const situationController = {
         try {
             const limit = req.query.limit || 10
             const page = req.query.page || 1
-            const situation = await Situation.find().limit(limit).populate("departmentId")
+            const situation = await Situation.find().limit(limit).populate("departmentId").populate("diagnose")
             if(!situation){
                 return res.status(400).json("Situation is empty")
             }

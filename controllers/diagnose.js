@@ -6,10 +6,10 @@ const diagnoseController = {
             const diagnose = new Diagnose(req.body)
             const newDiagnose = await diagnose.save()
             if(req.body.situationId){
-                const situation = await Situation.findById( req.body.situationId )
+                const situation = await Situation.findById(req.body.situationId)
                 // await Situation.findByIdAndUpdate(req.body.situationId, {$push: {$diagnose: diagnose._id}})
-                await situation.updateOne({$push: {$diagnose: diagnose._id}})
-                console.log(situation)
+                await situation.updateOne({$push: {diagnose: newDiagnose._id}})
+                // console.log(situation)
                 if(req.body.done){
                     // await Situation.findByIdAndUpdate(req.body.situationId, { isFinish: true })
                     await situation.updateOne({$isFinish: true})
