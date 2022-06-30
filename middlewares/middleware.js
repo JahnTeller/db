@@ -17,11 +17,25 @@ const verifyToken =  async(req,res,next) => {
 }
 
 const verifyAdmin = async(req,res, next) => {
-    if (req.user && req.user.isAdmin) {
-        next();
-      } else {
-        res.status(401);
-        throw new Error("Not authorized as an Admin");
-      }
+    const token = req.headers.token?.split(" ")[1]
+    if(token){
+        jwt.verify(token, process.env.JWT_SECRET, (err,user) => {
+            if(err){
+                res.status(404).json(err)
+            }
+            if(user.user.isAdmin) {
+                console.log(user)
+                res.user = user.user
+                // console.log(user.user)
+                next()
+            }
+            else{
+                return res.status(403).json("Token is not valid")
+            }
+        })
+    }
+    else{
+        return res.status(403).json("You're not authenticated")
+    }
 }
 module.exports = { verifyToken, verifyAdmin };
