@@ -50,10 +50,9 @@ const diagnoseController = {
             const situationId = req.query.situationId 
             console.log(situationId)
             let diagnose 
-            if(situationId === 'undefined'){
-                // console.log('sd')
+            if(situationId === 'undefined' || situationId === undefined){
                 diagnose = await Diagnose.find({}).populate("treatment").populate("situationId")
-            }else{
+            }else if(situationId !== 'undefined'){
                 diagnose = await Diagnose.find({situationId: situationId}).populate("treatment").populate("situationId")
             }
             res.status(200).json(diagnose)
