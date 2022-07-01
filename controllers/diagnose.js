@@ -48,11 +48,13 @@ const diagnoseController = {
     getAll: async(req,res) => {
         try {   
             const situationId = req.query.situationId 
+            console.log(situationId)
             let diagnose 
-            if(situationId){
-                diagnose = await Diagnose.find({situationId: situationId}).populate("treatment").populate("situationId")
-            }else{
+            if(situationId === 'undefined'){
+                // console.log('sd')
                 diagnose = await Diagnose.find({}).populate("treatment").populate("situationId")
+            }else{
+                diagnose = await Diagnose.find({situationId: situationId}).populate("treatment").populate("situationId")
             }
             res.status(200).json(diagnose)
         } catch (error) {
