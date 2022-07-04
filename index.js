@@ -26,7 +26,10 @@ app.use(
 app.use(cors());
 app.use(morgan("common"));
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://dashboard-git-main-huynhnhutnam2k.vercel.app"
+  );
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -34,7 +37,6 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
   next();
 });
-
 connect();
 app.use("/api/situation", situationRouter);
 app.use("/api/department", departmentRouter);
