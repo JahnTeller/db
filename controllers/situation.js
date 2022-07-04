@@ -51,9 +51,9 @@ const situationController = {
   get: async (req, res) => {
     try {
       const id = req.params.id;
-      const situation = await Situation.findOne({ _id: id }).populate(
-        "departmentId"
-      );
+      const situation = await Situation.findOne({ _id: id })
+        .populate("departmentId")
+        .populate("diagnose");
       if (!situation) {
         return res.status(404).json("Situation not found");
       }
@@ -123,7 +123,9 @@ const situationController = {
       let perPage = 16;
       const situation = await Situation.find()
         .skip(perPage * page - perPage)
-        .limit(perPage);
+        .limit(perPage)
+        .populate("diagnose")
+        .populate("departmentId");
       res.status(200).json(situation);
     } catch (error) {
       res.status(500).json(`Error :${error}`);
