@@ -9,7 +9,7 @@ const markSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  mark: {
+  marks: {
     type: Number,
     default: 0,
     required: true,

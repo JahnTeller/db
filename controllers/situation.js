@@ -41,7 +41,8 @@ const situationController = {
       await Situation.findByIdAndDelete(id);
       await Department.updateMany(
         { situation: id },
-        { $pull: { situation: id } }
+        { $pull: { situation: id } },
+        { multi: true }
       );
       res.status(200).json("Delete success");
     } catch (error) {
@@ -135,11 +136,11 @@ const situationController = {
     try {
       const user = req.user._id;
       // console.log(user)
-      const { mark, situationId } = req.body;
+      const { marks, situationId } = req.body;
       const newMark = new Mark({
         userId: user,
         situation: situationId,
-        mark: mark,
+        marks: marks,
       });
       const saveMark = await newMark.save();
       const situation = await Situation.findOne({ _id: situationId });
