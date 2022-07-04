@@ -6,14 +6,19 @@ const situationController = {
   create: async (req, res) => {
     try {
       const situation = new Situation(req.body);
+      situation.markModified("situation");
       const newSituation = await situation.save();
       if (req.body.departmentId) {
         const department = await Department.findById(req.body.departmentId);
         // await Department.findByIdAndUpdate(req.body.departmentId, {$push: { $situation: newSituation._id}})
+        // console.log(department);
         await department.updateOne({ $push: { situation: newSituation._id } });
+        // console.log(department);
       }
+      // console.log(newSituation);
       res.status(200).json(newSituation);
     } catch (error) {
+      console.log(error);
       res.status(500).json(`Error ${error}`);
     }
   },
@@ -73,10 +78,10 @@ const situationController = {
   },
   getAll: async (req, res) => {
     try {
-      const limit = req.query.limit || 10;
-      const page = req.query.page || 1;
+      // const limit = req.query.limit || 10;
+      // const page = req.query.page || 1;
       const situation = await Situation.find()
-        .limit(limit)
+        // .limit(limit)
         .populate("departmentId")
         .populate("diagnose");
       if (!situation) {
