@@ -13,11 +13,13 @@ const verifyToken = async (req, res, next) => {
         next();
       } else if (err) {
         res.status(401).json({ status: false, result: "Invalid token" });
+      } else {
+        next();
       }
     });
   } catch (e) {
     //console.log(e);
-    res.status(401).json({ status: false, result: "Token does not exist" });
+    return res.status(403).json("You're not authenticated");
   }
 };
 
