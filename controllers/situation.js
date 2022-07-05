@@ -120,7 +120,7 @@ const situationController = {
   pagination: async (req, res) => {
     try {
       const page = req.params.page || 1;
-      let perPage = 16;
+      let perPage = 10;
       const situation = await Situation.find()
         .skip(perPage * page - perPage)
         .limit(perPage)
