@@ -20,7 +20,7 @@ const verifyAdmin = async (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        res.status(404).json(err);
+        return res.status(404).json(err);
       }
       if (user.user.isAdmin) {
         console.log(user);
