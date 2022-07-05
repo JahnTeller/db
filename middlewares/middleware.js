@@ -1,31 +1,23 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const verifyToken = async (req, res, next) => {
-  const token = await req.headers.token?.split(" ")[1];
-  if (token) {
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET, {
-      ignoreExpiration: true,
+  try {
+    const token = req.headers.token.split(" ")[1];
+    jwt.verify(token, SECRET, (err, decoded) => {
+      if (err.name === "TokenExpiredError") {
+        const payload = jwt.verify(token, process.env.JWT_SECRET, {
+          ignoreExpiration: true,
+        });
+
+        // res.status(200).json({ status: true, token: refreshToken });
+        next();
+      } else if (err) {
+        res.status(401).json({ status: false, result: "Invalid token" });
+      }
     });
-    // var isExpiredToken = false;
-
-    // var dateNow = new Date();
-
-    // if (decoded.exp < dateNow.getTime()) {
-    //   isExpiredToken = true;
-    // }
-    if (!decoded) {
-      return res.status(404).json("Not authorized, no token");
-    }
-    //  else if (isExpiredToken) {
-    //   return res.status(403).json("Token is expired");
-    // } else {
-    req.user = await User.findById(decoded.id).select("-password");
-    // console.log("helop")
-    next();
-    // }
-  } else {
-    // return res.status(403).json("Not authorized, no token")
-    return next(new NotAuthorizedError());
+  } catch (e) {
+    //console.log(e);
+    res.status(401).json({ status: false, result: "Token does not exist" });
   }
 };
 
