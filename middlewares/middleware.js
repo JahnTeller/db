@@ -10,14 +10,16 @@ const verifyToken = async (req, res, next) => {
 
     if (decoded.exp < dateNow.getTime()) {
       isExpiredToken = true;
-      return res.status(403).json("Token is expired");
     }
     if (!decoded) {
       return res.status(404).json("Not authorized, no token");
+    } else if (isExpiredToken) {
+      return res.status(403).json("Token is expired");
+    } else {
+      req.user = await User.findById(decoded.id).select("-password");
+      // console.log("helop")
+      next();
     }
-    req.user = await User.findById(decoded.id).select("-password");
-    // console.log("helop")
-    next();
   } else {
     // return res.status(403).json("Not authorized, no token")
     return next(new NotAuthorizedError());
