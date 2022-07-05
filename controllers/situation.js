@@ -122,14 +122,16 @@ const situationController = {
       const page = req.params.page || 1;
       let perPage = 12;
       const total = await Situation.countDocuments();
-      console.log(total);
+      // console.log(total);
       const situation = await Situation.find()
         .skip(perPage * page - perPage)
         .limit(perPage)
         .populate("diagnose", "name isTrue situationId")
         .populate("departmentId", "-situation")
         .select("-desc");
-      res.status(200).json(situation);
+
+      const maxPage = Math.ceil(total / perPage);
+      res.status(200).json({ situation, maxPage });
     } catch (error) {
       res.status(500).json(`Error :${error}`);
     }
