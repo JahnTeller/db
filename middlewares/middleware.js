@@ -4,6 +4,14 @@ const verifyToken = async (req, res, next) => {
   const token = await req.headers.token?.split(" ")[1];
   if (token) {
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    var isExpiredToken = false;
+
+    var dateNow = new Date();
+
+    if (decoded.exp < dateNow.getTime()) {
+      isExpiredToken = true;
+      return res.status(403).json("Token is expired");
+    }
     if (!decoded) {
       return res.status(404).json("Not authorized, no token");
     }
