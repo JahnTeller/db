@@ -14,7 +14,7 @@ const userController = {
         const token = await jwt.sign(
           { id: user._id },
           process.env.JWT_SECRET,
-          { expiresIn: "24h" },
+          { expiresIn: "1h" },
           { algorithm: "HS256" }
         );
         return res.json({
