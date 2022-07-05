@@ -1,25 +1,17 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const verifyToken = async (req, res, next) => {
-  try {
-    const token = req.headers.token.split(" ")[1];
-    jwt.verify(token, SECRET, (err, decoded) => {
-      if (err.name === "TokenExpiredError") {
-        const payload = jwt.verify(token, process.env.JWT_SECRET, {
-          ignoreExpiration: true,
-        });
-
-        // res.status(200).json({ status: true, token: refreshToken });
-        next();
-      } else if (err) {
-        res.status(401).json({ status: false, result: "Invalid token" });
-      } else {
-        next();
+  if (token) {
+    const accessToken = token.split(" ")[1];
+    jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return res.status(403).json("Token is not valid!");
       }
+      req.user = user;
+      next();
     });
-  } catch (e) {
-    //console.log(e);
-    return res.status(403).json(`Error ${e}`);
+  } else {
+    return res.status(401).json("You're not authenticated");
   }
 };
 
