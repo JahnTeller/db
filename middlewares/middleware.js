@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const verifyToken = async (req, res, next) => {
   if (token) {
-    const accessToken = token.split(" ")[1];
+    const accessToken = await req.headers.token?.split(" ")[1];
     jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
       if (err) {
         return res.status(403).json("Token is not valid!");
