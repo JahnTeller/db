@@ -59,7 +59,9 @@ const userController = {
   },
   getByRole: async (req, res) => {
     try {
-      const user = req.user;
+      console.log(req.user);
+      const user = await User.findOne({ _id: req.user.id });
+      // console.log(user);
       const role = user.role;
       const isAdmin = user.isAdmin;
       let department;
@@ -78,7 +80,7 @@ const userController = {
         situation,
       });
     } catch (error) {
-      res.status(500).json(`Error ${error}`);
+      res.status(500).json(`Error user ${error}`);
     }
   },
 };
