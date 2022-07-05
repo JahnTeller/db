@@ -60,11 +60,13 @@ const diagnoseController = {
       if (situationId === "undefined" || situationId === undefined) {
         diagnose = await Diagnose.find({})
           .populate("treatment", "-desc")
-          .populate("situationId", "-desc");
+          .populate("situationId", "-desc")
+          .select("-desc");
       } else if (situationId !== "undefined") {
         diagnose = await Diagnose.find({ situationId: situationId })
           .populate("treatment", "-desc")
-          .populate("situationId", "-desc");
+          .populate("situationId", "-desc")
+          .select("-desc");
       }
       res.status(200).json(diagnose);
     } catch (error) {
