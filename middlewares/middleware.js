@@ -19,7 +19,7 @@ const verifyToken = async (req, res, next) => {
     });
   } catch (e) {
     //console.log(e);
-    return res.status(403).json("You're not authenticated");
+    return res.status(403).json(e);
   }
 };
 
