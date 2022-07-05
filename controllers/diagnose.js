@@ -55,7 +55,7 @@ const diagnoseController = {
   getAll: async (req, res) => {
     try {
       const situationId = req.query.situationId;
-      const page = req.query.page;
+      const page = req.query.page || 1;
       const limit = 10;
       // console.log(situationId);
       let diagnose;
