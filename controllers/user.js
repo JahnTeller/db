@@ -11,12 +11,10 @@ const userController = {
       const user = await User.findOne({ email: email });
       const validPassword = await bcrypt.compare(password, user.password);
       if (user && validPassword) {
-        const token = await jwt.sign(
-          { id: user._id },
-          process.env.JWT_SECRET,
-          { expiresIn: "1h" },
-          { algorithm: "HS256" }
-        );
+        const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "24h",
+          algorithm: "HS256",
+        });
         return res.json({
           _id: user._id,
           name: user.name,
