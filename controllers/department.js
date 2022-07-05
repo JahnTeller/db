@@ -55,6 +55,19 @@ const departmentController = {
       res.status(500).json(`Error ${error}`);
     }
   },
+  pagination: async (req, res) => {
+    try {
+      const page = req.params.page || 1;
+      const limit = 10;
+      const departments = await Department.find({})
+        .skip(page * limit - limit)
+        .limit(limit)
+        .populate("situation", "-desc");
+      res.status(200).json(departments);
+    } catch (error) {
+      res.status(500).json(`Erorr ${error}`);
+    }
+  },
 };
 
 module.exports = departmentController;

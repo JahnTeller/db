@@ -50,7 +50,11 @@ const treatmentController = {
   },
   getAll: async (req, res) => {
     try {
+      const page = req.query.page || 1;
+      const limit = 10;
       const treatment = await Treatment.find()
+        .skip(page * limit - limit)
+        .limit(limit)
         .populate("diagnose", "-desc")
         .populate("situation", "-desc");
       res.status(200).json(treatment);
