@@ -55,18 +55,24 @@ const diagnoseController = {
   getAll: async (req, res) => {
     try {
       const situationId = req.query.situationId;
+      const page = req.query.page;
+      const limit = 10;
       // console.log(situationId);
       let diagnose;
       if (situationId === "undefined" || situationId === undefined) {
         diagnose = await Diagnose.find({})
           .populate("treatment", "-desc")
           .populate("situationId", "-desc")
-          .select("-desc");
+          .select("-desc")
+          .skip(page * limit - limit)
+          .limit(limit);
       } else if (situationId !== "undefined") {
         diagnose = await Diagnose.find({ situationId: situationId })
           .populate("treatment", "-desc")
           .populate("situationId", "-desc")
-          .select("-desc");
+          .select("-desc")
+          .skip(page * limit - limit)
+          .limit(limit);
       }
       res.status(200).json(diagnose);
     } catch (error) {
