@@ -5,6 +5,6 @@ router.post("/", verifyToken, controller.create);
 router.put("/:id", verifyToken, controller.edit);
 router.delete("/:id", verifyToken, controller.del);
 router.get("/:id", controller.get);
-router.get("page/:page", controller.pagination);
+router.get("/page/:page", controller.pagination);
 router.get("/", controller.getAll);
 module.exports = router;

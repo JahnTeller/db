@@ -121,6 +121,8 @@ const situationController = {
     try {
       const page = req.params.page || 1;
       let perPage = 12;
+      const total = await Situation.countDocuments();
+      console.log(total);
       const situation = await Situation.find()
         .skip(perPage * page - perPage)
         .limit(perPage)

@@ -59,11 +59,14 @@ const departmentController = {
     try {
       const page = req.params.page || 1;
       const limit = 10;
+      const depart = await Department.countDocuments();
+
       const departments = await Department.find({})
         .skip(page * limit - limit)
         .limit(limit)
         .populate("situation", "-desc");
-      res.status(200).json(departments);
+      const maxPage = Math.ceil(depart / limit);
+      res.status(200).json({ departments, maxPage });
     } catch (error) {
       res.status(500).json(`Erorr ${error}`);
     }

@@ -52,12 +52,14 @@ const treatmentController = {
     try {
       const page = req.query.page || 1;
       const limit = 10;
+      const count = await Treatment.countDocuments();
       const treatment = await Treatment.find()
         .skip(page * limit - limit)
         .limit(limit)
         .populate("diagnose", "-desc")
         .populate("situation", "-desc");
-      res.status(200).json(treatment);
+      const maxPage = Math.ceil(count / limit);
+      res.status(200).json({ treatment, maxPage });
     } catch (error) {
       res.status(500).json(`Error ${error}`);
     }

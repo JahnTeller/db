@@ -1,3 +1,4 @@
+const { countDocuments } = require("../models/diagnose");
 const Diagnose = require("../models/diagnose");
 const Situation = require("../models/situation");
 const diagnoseController = {
@@ -58,6 +59,7 @@ const diagnoseController = {
       const page = req.query.page || 1;
       const limit = 10;
       // console.log(situationId);
+      const fullDiagnose = await Diagnose.countDocuments();
       let diagnose;
       if (situationId === "undefined" || situationId === undefined) {
         diagnose = await Diagnose.find({})
@@ -74,7 +76,9 @@ const diagnoseController = {
           .skip(page * limit - limit)
           .limit(limit);
       }
-      res.status(200).json(diagnose);
+      const maxPage = Math.ceil(fullDiagnose / limit);
+      // console.log(diagnose.length, fullDiagnose);
+      res.status(200).json({ diagnose, maxPage });
     } catch (error) {
       res.status(500).json(`Error: ${error}`);
     }
