@@ -33,8 +33,8 @@ const verifyAdmin = async (req, res, next) => {
       }
     });
   } else {
-    // return res.status(403).json("You're not authenticated")
-    return next(new NotAuthorizedError());
+    return res.status(403).json("You're not authenticated");
+    // return next(new NotAuthorizedError());
   }
 };
 module.exports = { verifyToken, verifyAdmin };
