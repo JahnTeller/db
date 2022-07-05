@@ -45,8 +45,8 @@ const diagnoseController = {
   get: async (req, res) => {
     try {
       const diagnose = await Diagnose.findOne({ _id: req.params.id })
-        .populate("situationId")
-        .populate("treatment");
+        .populate("situationId", "-desc")
+        .populate("treatment", "-desc");
       res.status(200).json(diagnose);
     } catch (error) {
       res.status(500).json(`Error: ${error}`);
@@ -55,16 +55,16 @@ const diagnoseController = {
   getAll: async (req, res) => {
     try {
       const situationId = req.query.situationId;
-      console.log(situationId);
+      // console.log(situationId);
       let diagnose;
       if (situationId === "undefined" || situationId === undefined) {
         diagnose = await Diagnose.find({})
-          .populate("treatment")
-          .populate("situationId");
+          .populate("treatment", "-desc")
+          .populate("situationId", "-desc");
       } else if (situationId !== "undefined") {
         diagnose = await Diagnose.find({ situationId: situationId })
-          .populate("treatment")
-          .populate("situationId");
+          .populate("treatment", "-desc")
+          .populate("situationId", "-desc");
       }
       res.status(200).json(diagnose);
     } catch (error) {

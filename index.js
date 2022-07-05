@@ -11,6 +11,7 @@ const diagnoseRouter = require("./routes/diagnose");
 const userRouter = require("./routes/user");
 const markRouter = require("./routes/mark");
 const connect = require("./config/db");
+const http = require("http");
 
 // const { createProxyMiddleware } = require('http-proxy-middleware');
 const PORT = process.env.PORT || 8000;
@@ -41,6 +42,10 @@ app.use("/api/treatment", treatmentRouter);
 app.use("/api/diagnose", diagnoseRouter);
 app.use("/api/user", userRouter);
 app.use("/api/mark", markRouter);
+// const httpServer = http.createServer(app);
+// httpServer.timeout = 25 * 1000;
+// httpServer.keepAliveTimeout = 70 * 1000;
+// httpServer.headersTimeout = 120 * 1000;
 app.listen(PORT, () => {
   console.log(`Server is running in port ${PORT}`);
 });

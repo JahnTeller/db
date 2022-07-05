@@ -67,11 +67,13 @@ const userController = {
       let department;
       let situation;
       if (isAdmin) {
-        department = await Department.find();
-        situation = await Situation.find();
+        department = await Department.find().select("-desc");
+        situation = await Situation.find().select("-desc");
       } else {
-        department = await Department.findOne({ name: role });
-        situation = await Situation.find({ departmentId: department._id });
+        department = await Department.findOne({ name: role }).select("-desc");
+        situation = await Situation.find({
+          departmentId: department._id,
+        }).select("-desc");
       }
       res.status(200).json({
         department,

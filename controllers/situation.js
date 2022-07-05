@@ -53,8 +53,8 @@ const situationController = {
     try {
       const id = req.params.id;
       const situation = await Situation.findOne({ _id: id })
-        .populate("departmentId")
-        .populate("diagnose");
+        .populate("departmentId", "_id name")
+        .populate("diagnose", "name isTrue");
       if (!situation) {
         return res.status(404).json("Situation not found");
       }
@@ -79,15 +79,14 @@ const situationController = {
   },
   getAll: async (req, res) => {
     try {
-      // const limit = req.query.limit || 10;
-      // const page = req.query.page || 1;
       const situation = await Situation.find()
-        // .limit(limit)
-        .populate("departmentId")
-        .populate("diagnose");
+        .populate("departmentId", "name")
+        .populate("diagnose", "name _id isTrue")
+        .select("-desc");
       if (!situation) {
         return res.status(400).json("Situation is empty");
       }
+      console.log(situation.length);
       res.status(200).json(situation);
     } catch (error) {
       res.status(500).json(`Error ${error}`);
@@ -125,8 +124,9 @@ const situationController = {
       const situation = await Situation.find()
         .skip(perPage * page - perPage)
         .limit(perPage)
-        .populate("diagnose")
-        .populate("departmentId");
+        .populate("diagnose", "name isTrue situationId")
+        .populate("departmentId", "-situation")
+        .select("-desc");
       res.status(200).json(situation);
     } catch (error) {
       res.status(500).json(`Error :${error}`);
