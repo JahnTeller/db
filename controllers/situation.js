@@ -86,8 +86,8 @@ const situationController = {
     try {
       const situation = await Situation.find()
         .populate("departmentId", "name")
-        .populate("diagnose", "name _id isTrue")
-        .select("-desc");
+        .populate("diagnose", "name _id isTrue");
+      // .select("-desc");
       if (!situation) {
         return res.status(400).json("Situation is empty");
       }
@@ -143,7 +143,7 @@ const situationController = {
   },
   submit: async (req, res) => {
     try {
-      const user = req.user._id;
+      const user = req.user.id;
       // console.log(user)
       const { marks, situationId } = req.body;
       const newMark = new Mark({
