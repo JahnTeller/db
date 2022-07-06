@@ -66,9 +66,14 @@ const situationController = {
   getByDepartment: async (req, res) => {
     try {
       const idDepart = req.params.id;
+      const limit = 12;
+      const page = req.query.page || 1;
+
       const situation = await Situation.find({ departmentId: idDepart })
         .populate("departmentId")
-        .populate("diagnose");
+        .populate("diagnose")
+        .skip(limit * page - limit)
+        .limit(limit);
       if (!situation) {
         return res.status(404).json("Situation not found");
       }
