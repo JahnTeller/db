@@ -68,7 +68,7 @@ const situationController = {
       const idDepart = req.params.id;
       const limit = 12;
       const page = req.query.page || 1;
-
+      const count = await Situation.countDocuments();
       const situation = await Situation.find({ departmentId: idDepart })
         .populate("departmentId")
         .populate("diagnose")
@@ -77,7 +77,8 @@ const situationController = {
       if (!situation) {
         return res.status(404).json("Situation not found");
       }
-      res.status(200).json(situation);
+      const maxPage = Math.ceil(count / limit);
+      res.status(200).json({ situation, maxPage });
     } catch (error) {
       res.status(500).json(`Error ${error}`);
     }
