@@ -83,6 +83,28 @@ const diagnoseController = {
       res.status(500).json(`Error: ${error}`);
     }
   },
+  search: async (req, res) => {
+    try {
+      const keyword = req.query.keyword;
+      let diagnose;
+      if (keyword === "undefined" || keyword === undefined) {
+        diagnose = await Diagnose.find()
+          .populate("treatment", "-desc")
+          .populate("situationId", "-desc")
+          .select("-desc");
+      } else {
+        diagnose = await Diagnose.find({
+          name: { $regex: keyword, $options: "i" },
+        })
+          .populate("treatment", "-desc")
+          .populate("situationId", "-desc")
+          .select("-desc");
+      }
+      res.status(200).json(diagnose);
+    } catch (error) {
+      res.status(500).json(`Error ${error}`);
+    }
+  },
 };
 
 module.exports = diagnoseController;

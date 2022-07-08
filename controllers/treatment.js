@@ -64,6 +64,26 @@ const treatmentController = {
       res.status(500).json(`Error ${error}`);
     }
   },
+  search: async (req, res) => {
+    try {
+      const keyword = req.query.keyword?.toLowerCase();
+      let treatment;
+      if (keyword === "undefined" || keyword === undefined) {
+        treatment = await Treatment.find()
+          .populate("diagnose", "-desc")
+          .populate("situation", "-desc");
+      } else {
+        treatment = await Treatment.find({
+          $or: [{ name: { $regex: keyword } }, { note: { $regex: keyword } }],
+        })
+          .populate("diagnose", "-desc")
+          .populate("situation", "-desc");
+      }
+      res.status(200).json(treatment);
+    } catch (error) {
+      res.status(500).json(`Error ${error}`);
+    }
+  },
 };
 
 module.exports = treatmentController;
