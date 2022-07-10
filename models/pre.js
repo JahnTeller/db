@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const finalDiagnoseSchema = new mongoose.Schema(
+const premilinary = new mongoose.Schema(
   {
     situation: {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,8 +19,19 @@ const finalDiagnoseSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    isTrue: {
+      type: Boolean,
+      default: false,
+    },
+    treatment: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Treatment",
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
+module.exports = mongoose.model("Premilinary", premilinary);

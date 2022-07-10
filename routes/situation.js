@@ -7,7 +7,7 @@ router.get("/page/:page", controller.pagination);
 router.get("/department/:id", controller.getByDepartment);
 router.get("/search", controller.search);
 router.post("/submit", verifyToken, controller.submit);
-router.post("/", verifyToken, controller.create);
+router.post("/", controller.create);
 router.get("/:id", controller.get);
 router.get("/", controller.getAll);
 

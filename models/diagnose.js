@@ -1,31 +1,33 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const diagnoseSchema = new mongoose.Schema({
-    situationId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Situation"
+const diagnoseSchema = new mongoose.Schema(
+  {
+    premilinary: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Premilinary",
     },
-    desc: { 
-        type: String, 
-        required: true
+    desc: {
+      type: String,
+      required: true,
     },
     treatment: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Treatment"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Treatment",
+      },
     ],
     name: {
-        type: String, 
-        required: true
+      type: String,
+      required: true,
     },
     isTrue: {
-        type: Boolean,
-        default: false
-    }
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-},{
-    timestamps: true
-})
-
-module.exports = mongoose.model("Diagnose", diagnoseSchema)
+module.exports = mongoose.model("Diagnose", diagnoseSchema);

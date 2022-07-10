@@ -1,6 +1,7 @@
 const Situation = require("../models/situation");
 const Department = require("../models/department");
 const Mark = require("../models/mark");
+const Pre = require("../models/pre");
 const base64 = require("base-64");
 const situationController = {
   create: async (req, res) => {
@@ -44,6 +45,11 @@ const situationController = {
         { $pull: { situation: id } },
         { multi: true }
       );
+      await Pre.updateMany(
+        { situation: id },
+        { situation: null },
+        { multi: true }
+      );
       res.status(200).json("Delete success");
     } catch (error) {
       res.status(500).json(`Error ${error}`);
@@ -54,7 +60,7 @@ const situationController = {
       const id = req.params.id;
       const situation = await Situation.findOne({ _id: id })
         .populate("departmentId", "_id name")
-        .populate("diagnose", "name isTrue");
+        .populate("premilinary", "name _id isTrue");
       if (!situation) {
         return res.status(404).json("Situation not found");
       }
@@ -87,7 +93,7 @@ const situationController = {
     try {
       const situation = await Situation.find()
         .populate("departmentId", "name")
-        .populate("diagnose", "name _id isTrue");
+        .populate("premilinary", "name _id isTrue");
       // .select("-desc");
       if (!situation) {
         return res.status(400).json("Situation is empty");
@@ -132,8 +138,9 @@ const situationController = {
       const situation = await Situation.find()
         .skip(perPage * page - perPage)
         .limit(perPage)
-        .populate("diagnose", "name isTrue situationId")
+        // .populate("diagnose", "name isTrue situationId")
         .populate("departmentId", "-situation")
+        .populate("premilinary", "name _id isTrue")
         .select("-desc");
 
       const maxPage = Math.ceil(total / perPage);

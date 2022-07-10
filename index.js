@@ -10,6 +10,7 @@ const treatmentRouter = require("./routes/treatment");
 const diagnoseRouter = require("./routes/diagnose");
 const userRouter = require("./routes/user");
 const markRouter = require("./routes/mark");
+const preRouter = require("./routes/pre");
 const connect = require("./config/db");
 const http = require("http");
 
@@ -42,6 +43,7 @@ app.use("/api/treatment", treatmentRouter);
 app.use("/api/diagnose", diagnoseRouter);
 app.use("/api/user", userRouter);
 app.use("/api/mark", markRouter);
+app.use("/api/premilinary", preRouter);
 // const httpServer = http.createServer(app);
 // httpServer.timeout = 25 * 1000;
 // httpServer.keepAliveTimeout = 70 * 1000;

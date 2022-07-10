@@ -1,16 +1,27 @@
 const Treatment = require("../models/treatment");
 const Diagnose = require("../models/diagnose");
+const Pre = require("../models/pre");
 const Situation = require("../models/situation");
 const treatmentController = {
   create: async (req, res) => {
     try {
-      const treatment = new Treatment(req.body);
-      if (req.body.diagnose) {
+      let treatment = await new Treatment(req.body);
+      let newTreatment = await treatment.save();
+      if (
+        req.body.premilinary &&
+        req.body.diagnose == "62c953dcca4fc79e26fa8a21"
+      ) {
+        const pre = await Pre.findByIdAndUpdate(req.body.premilinary, {
+          $push: { treatment: newTreatment._id },
+        });
+        console.log("outside");
+      } else {
+        console.log("inside");
         await Diagnose.findByIdAndUpdate(req.body.diagnose, {
-          $push: { treatment: treatment._id },
+          $push: { treatment: newTreatment._id },
         });
       }
-      const newTreatment = await treatment.save();
+
       res.status(200).json(newTreatment);
     } catch (error) {
       res.status(500).json(`Error ${error}`);
@@ -53,7 +64,7 @@ const treatmentController = {
       const page = req.query.page || 1;
       const limit = 10;
       const count = await Treatment.countDocuments();
-      const treatment = await Treatment.find()
+      const treatment = await Treatment.find({ diagnose: { $ne: null } })
         .skip(page * limit - limit)
         .limit(limit)
         .populate("diagnose", "-desc")
