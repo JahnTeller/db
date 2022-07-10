@@ -66,7 +66,20 @@ const pre = {
   },
   delete: async (req, res) => {
     try {
-      await Pre.findByIdAndDelete(req.params.id);
+      const pre = await Pre.findById(req.params.id);
+      await pre.remove();
+      if (pre.treatment.length > 0) {
+        await Treatment.updateMany(
+          { premilinary: pre._id },
+          { $set: { premilinary: null } }
+        );
+      }
+      if (pre.diagnose.length > 0) {
+        await Diagnose.updateMany(
+          { premilinary: pre._id },
+          { $set: { premilinary: null } }
+        );
+      }
       await Situation.updateOne(
         { premilinary: req.params.id },
         { $pull: { premilinary: req.params.id } }

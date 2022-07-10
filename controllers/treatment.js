@@ -39,11 +39,17 @@ const treatmentController = {
   },
   del: async (req, res) => {
     try {
-      await Treatment.findByIdAndDelete(req.params.id);
-      await Diagnose.updateOne(
-        { treatment: req.params.id },
-        { treatment: null }
-      );
+      const treatment = await Treatment.findById(req.params.id);
+      await treatment.remove();
+      if (treatment.diagnose == "62c953dcca4fc79e26fa8a21") {
+        await Pre.findByIdAndUpdate(treatment.premilinary, {
+          $pull: { treatment: treatment._id },
+        });
+      } else {
+        await Diagnose.findByIdAndUpdate(treatment.diagnose, {
+          $pull: { treatment: treatment._id },
+        });
+      }
       res.status(200).json("Delete success");
     } catch (error) {
       res.status(500).json(`Error ${error}`);
@@ -53,7 +59,8 @@ const treatmentController = {
     try {
       const treatment = await Treatment.findOne({ _id: req.params.id })
         .populate("diagnose", "-desc")
-        .populate("situation", "-desc");
+        .populate("situation", "-desc")
+        .populate("premilinary", "name _id isTrue");
       res.status(200).json(treatment);
     } catch (error) {
       res.status(500).json(`Error ${error}`);
@@ -68,7 +75,8 @@ const treatmentController = {
         .skip(page * limit - limit)
         .limit(limit)
         .populate("diagnose", "-desc")
-        .populate("situation", "-desc");
+        .populate("situation", "-desc")
+        .populate("premilinary", "name _id isTrue");
       const maxPage = Math.ceil(count / limit);
       res.status(200).json({ treatment, maxPage });
     } catch (error) {
@@ -82,13 +90,15 @@ const treatmentController = {
       if (keyword === "undefined" || keyword === undefined) {
         treatment = await Treatment.find()
           .populate("diagnose", "-desc")
-          .populate("situation", "-desc");
+          .populate("situation", "-desc")
+          .populate("premilinary", "name _id isTrue");
       } else {
         treatment = await Treatment.find({
           $or: [{ name: { $regex: keyword } }, { note: { $regex: keyword } }],
         })
           .populate("diagnose", "-desc")
-          .populate("situation", "-desc");
+          .populate("situation", "-desc")
+          .populate("premilinary", "name _id isTrue");
       }
       res.status(200).json(treatment);
     } catch (error) {

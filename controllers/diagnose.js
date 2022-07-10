@@ -63,16 +63,16 @@ const diagnoseController = {
       let diagnose;
       if (premilinary === "undefined" || premilinary === undefined) {
         diagnose = await Diagnose.find({})
-          // .populate("treatment", "-desc")
+          .populate("treatment", "name _id isTrue")
           .populate("premilinary", "-desc")
-          // .select("-desc")
+          .select("-desc")
           .skip(page * limit - limit)
           .limit(limit);
       } else if (premilinary !== "undefined") {
         diagnose = await Diagnose.find({ premilinary: premilinary })
-          // .populate("treatment", "-desc")
+          .populate("treatment", "name _id isTrue")
           .populate("premilinary", "-desc")
-          // .select("-desc")
+          .select("-desc")
           .skip(page * limit - limit)
           .limit(limit);
       }
