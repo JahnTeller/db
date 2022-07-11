@@ -10,9 +10,9 @@ const treatmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Situation",
     },
-    premilinary: {
+    preliminary: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Premilinary",
+      ref: "Preliminary",
     },
     isTrue: {
       type: Boolean,

@@ -14,10 +14,10 @@ const situationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    premilinary: [
+    preliminaries: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Premilinary",
+        ref: "Preliminary",
       },
     ],
     isExam: {

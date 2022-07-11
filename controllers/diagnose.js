@@ -1,5 +1,4 @@
 const Diagnose = require("../models/diagnose");
-const Situation = require("../models/situation");
 const Treatment = require("../models/treatment");
 const Pre = require("../models/pre");
 const diagnoseController = {
@@ -7,9 +6,9 @@ const diagnoseController = {
     try {
       const diagnose = new Diagnose(req.body);
       const newDiagnose = await diagnose.save();
-      if (req.body.premilinary) {
-        const pre = await Pre.findByIdAndUpdate(req.body.premilinary, {
-          $push: { diagnose: newDiagnose._id },
+      if (req.body.preliminary) {
+        const pre = await Pre.findByIdAndUpdate(req.body.preliminary, {
+          $push: { diagnoses: newDiagnose._id },
         });
       }
       res.status(200).json(newDiagnose);
@@ -46,8 +45,13 @@ const diagnoseController = {
   get: async (req, res) => {
     try {
       const diagnose = await Diagnose.findOne({ _id: req.params.id })
-        // .populate("situationId", "-desc")
-        .populate("treatment", "-desc");
+        .populate("treatments", "name _id isTrue")
+        .populate({
+          path: 'preliminary', select: 'name',
+          populate: {
+            path: 'situation', select: 'name'
+          }
+        });
       res.status(200).json(diagnose);
     } catch (error) {
       res.status(500).json(`Error: ${error}`);
@@ -55,23 +59,28 @@ const diagnoseController = {
   },
   getAll: async (req, res) => {
     try {
-      const premilinary = req.query.premilinary;
+      const preliminary = req.query.preliminary;
       const page = req.query.page || 1;
       const limit = 10;
       // console.log(situationId);
       const fullDiagnose = await Diagnose.countDocuments();
       let diagnose;
-      if (premilinary === "undefined" || premilinary === undefined) {
+      if (preliminary === "undefined" || preliminary === undefined) {
         diagnose = await Diagnose.find({})
-          .populate("treatment", "name _id isTrue")
-          .populate("premilinary", "-desc")
+          .populate("treatments", "name _id isTrue")
+          .populate({
+            path: 'preliminary',
+            populate: {
+              path: 'situation', select: 'name'
+            }
+          })
           .select("-desc")
           .skip(page * limit - limit)
           .limit(limit);
-      } else if (premilinary !== "undefined") {
-        diagnose = await Diagnose.find({ premilinary: premilinary })
-          .populate("treatment", "name _id isTrue")
-          .populate("premilinary", "-desc")
+      } else if (preliminary !== "undefined") {
+        diagnose = await Diagnose.find({ preliminary: preliminary })
+          .populate("treatments", "name _id isTrue")
+          .populate("preliminary", "-desc")
           .select("-desc")
           .skip(page * limit - limit)
           .limit(limit);
@@ -83,21 +92,28 @@ const diagnoseController = {
       res.status(500).json(`Error: ${error}`);
     }
   },
+  getByPreliminary: async (req, res) => {
+    try {
+      const preliminaryid = req.params.preliminaryid;
+      const diagnoses = await Diagnose.find({ preliminary: preliminaryid }).populate("preliminary", "name")
+      res.status(200).json(diagnoses)
+    } catch (error) {
+      res.status(500).json(`Error ${error}`);
+    }
+  },
   search: async (req, res) => {
     try {
       const keyword = req.query.keyword;
       let diagnose;
       if (keyword === "undefined" || keyword === undefined) {
         diagnose = await Diagnose.find()
-          .populate("treatment", "-desc")
-          .populate("situationId", "-desc")
+          .populate("treatments", "-desc")
           .select("-desc");
       } else {
         diagnose = await Diagnose.find({
           name: { $regex: keyword, $options: "i" },
         })
-          .populate("treatment", "-desc")
-          .populate("situationId", "-desc")
+          .populate("treatments", "-desc")
           .select("-desc");
       }
       res.status(200).json(diagnose);

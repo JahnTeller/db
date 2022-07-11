@@ -7,21 +7,11 @@ const treatmentController = {
     try {
       let treatment = await new Treatment(req.body);
       let newTreatment = await treatment.save();
-      if (
-        req.body.premilinary &&
-        req.body.diagnose == "62c953dcca4fc79e26fa8a21"
-      ) {
-        const pre = await Pre.findByIdAndUpdate(req.body.premilinary, {
-          $push: { treatment: newTreatment._id },
-        });
-        console.log("outside");
-      } else {
-        console.log("inside");
-        await Diagnose.findByIdAndUpdate(req.body.diagnose, {
-          $push: { treatment: newTreatment._id },
+      if (req.body.diagnose) {
+        const diagnose = await Diagnose.findByIdAndUpdate(req.body.diagnose, {
+          $push: { treatments: newTreatment._id },
         });
       }
-
       res.status(200).json(newTreatment);
     } catch (error) {
       res.status(500).json(`Error ${error}`);
@@ -42,12 +32,12 @@ const treatmentController = {
       const treatment = await Treatment.findById(req.params.id);
       await treatment.remove();
       if (treatment.diagnose == "62c953dcca4fc79e26fa8a21") {
-        await Pre.findByIdAndUpdate(treatment.premilinary, {
-          $pull: { treatment: treatment._id },
+        await Pre.findByIdAndUpdate(treatment.preliminary, {
+          $pull: { treatments: treatment._id },
         });
       } else {
         await Diagnose.findByIdAndUpdate(treatment.diagnose, {
-          $pull: { treatment: treatment._id },
+          $pull: { treatments: treatment._id },
         });
       }
       res.status(200).json("Delete success");
@@ -60,7 +50,7 @@ const treatmentController = {
       const treatment = await Treatment.findOne({ _id: req.params.id })
         .populate("diagnose", "-desc")
         .populate("situation", "-desc")
-        .populate("premilinary", "name _id isTrue");
+        .populate("preliminary", "name _id isTrue");
       res.status(200).json(treatment);
     } catch (error) {
       res.status(500).json(`Error ${error}`);
@@ -76,7 +66,7 @@ const treatmentController = {
         .limit(limit)
         .populate("diagnose", "-desc")
         .populate("situation", "-desc")
-        .populate("premilinary", "name _id isTrue");
+        .populate("preliminary", "name _id isTrue");
       const maxPage = Math.ceil(count / limit);
       res.status(200).json({ treatment, maxPage });
     } catch (error) {
@@ -91,14 +81,14 @@ const treatmentController = {
         treatment = await Treatment.find()
           .populate("diagnose", "-desc")
           .populate("situation", "-desc")
-          .populate("premilinary", "name _id isTrue");
+          .populate("preliminary", "name _id isTrue");
       } else {
         treatment = await Treatment.find({
           $or: [{ name: { $regex: keyword } }, { note: { $regex: keyword } }],
         })
           .populate("diagnose", "-desc")
           .populate("situation", "-desc")
-          .populate("premilinary", "name _id isTrue");
+          .populate("preliminary", "name _id isTrue");
       }
       res.status(200).json(treatment);
     } catch (error) {

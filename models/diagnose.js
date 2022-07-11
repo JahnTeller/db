@@ -2,15 +2,11 @@ const mongoose = require("mongoose");
 
 const diagnoseSchema = new mongoose.Schema(
   {
-    premilinary: {
+    preliminary: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Premilinary",
+      ref: "Preliminary",
     },
-    desc: {
-      type: String,
-      required: true,
-    },
-    treatment: [
+    treatments: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Treatment",

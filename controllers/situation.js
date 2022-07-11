@@ -1,7 +1,7 @@
 const Situation = require("../models/situation");
 const Department = require("../models/department");
 const Mark = require("../models/mark");
-const Pre = require("../models/pre");
+const Preliminary = require("../models/pre");
 const base64 = require("base-64");
 const situationController = {
   create: async (req, res) => {
@@ -60,7 +60,7 @@ const situationController = {
       const id = req.params.id;
       const situation = await Situation.findOne({ _id: id })
         .populate("departmentId", "_id name")
-        .populate("premilinary", "name _id isTrue");
+        .populate("preliminaries", "name _id isTrue");
       if (!situation) {
         return res.status(404).json("Situation not found");
       }
@@ -93,7 +93,7 @@ const situationController = {
     try {
       const situation = await Situation.find()
         .populate("departmentId", "name")
-        .populate("premilinary", "name _id isTrue");
+        .populate("preliminaries");
       // .select("-desc");
       if (!situation) {
         return res.status(400).json("Situation is empty");
@@ -140,7 +140,7 @@ const situationController = {
         .limit(perPage)
         // .populate("diagnose", "name isTrue situationId")
         .populate("departmentId", "-situation")
-        .populate("premilinary", "name _id isTrue")
+        .populate("preliminaries", "name _id isTrue")
         .select("-desc");
 
       const maxPage = Math.ceil(total / perPage);

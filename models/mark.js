@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const markSchema = new mongoose.Schema({
+const marksSchema = new mongoose.Schema({
   situation: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Situation",
@@ -24,4 +24,4 @@ const markSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Mark", markSchema);
+module.exports = mongoose.model("Mark", marksSchema);

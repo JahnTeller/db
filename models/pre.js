@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const premilinary = new mongoose.Schema(
+const preliminarySchme = new mongoose.Schema(
   {
     situation: {
       type: mongoose.Schema.Types.ObjectId,
@@ -10,7 +10,7 @@ const premilinary = new mongoose.Schema(
       type: String,
       required: true,
     },
-    diagnose: [
+    diagnoses: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Diagnose",
@@ -23,15 +23,9 @@ const premilinary = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    treatment: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Treatment",
-      },
-    ],
   },
   {
     timestamps: true,
   }
 );
-module.exports = mongoose.model("Premilinary", premilinary);
+module.exports = mongoose.model("Preliminary", preliminarySchme);
