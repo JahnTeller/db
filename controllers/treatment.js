@@ -64,9 +64,9 @@ const treatmentController = {
       const treatment = await Treatment.find({ diagnose: { $ne: null } })
         .skip(page * limit - limit)
         .limit(limit)
-        .populate("diagnose", "-desc")
         .populate("situation", "-desc")
-        .populate("preliminary", "name _id isTrue");
+        .populate("preliminary", "name _id isTrue")
+        .populate("diagnose", "-desc");
       const maxPage = Math.ceil(count / limit);
       res.status(200).json({ treatment, maxPage });
     } catch (error) {

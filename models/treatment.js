@@ -4,7 +4,7 @@ const treatmentSchema = new mongoose.Schema(
   {
     diagnose: {
       type: mongoose.Schema.Types.Mixed,
-      // ref: "Diagnose",
+      ref: "Diagnose",
     },
     situation: {
       type: mongoose.Schema.Types.ObjectId,
