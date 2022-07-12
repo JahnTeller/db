@@ -11,7 +11,7 @@ const userController = {
       const user = await User.findOne({ email: email });
       const validPassword = await bcrypt.compare(password, user.password);
       if (user && validPassword) {
-        const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const token = await jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, {
           expiresIn: "24h",
           algorithm: "HS256",
         });
@@ -30,6 +30,7 @@ const userController = {
   },
   register: async (req, res) => {
     try {
+      console.log(req.user)
       const { username, password, isAdmin, role, email } = req.body;
       const user = await User.findOne({ email });
       if (user) {
@@ -59,7 +60,7 @@ const userController = {
   },
   getByRole: async (req, res) => {
     try {
-      console.log(req.user);
+      // console.log(req.user);
       const user = await User.findOne({ _id: req.user.id });
       // console.log(user);
       const role = user.role;
