@@ -77,7 +77,7 @@ const situationController = {
       const count = await Situation.countDocuments();
       const situation = await Situation.find({ departmentId: idDepart })
         .populate("departmentId")
-        .populate("diagnose")
+        .populate("preliminaries")
         .skip(limit * page - limit)
         .limit(limit);
       if (!situation) {
