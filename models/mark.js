@@ -6,21 +6,14 @@ const marksSchema = new mongoose.Schema({
     ref: "Situation",
   },
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
-  },
-  userName: {
-    type: String,
-    required: true,
+    ref: "User"
   },
   marks: {
     type: Number,
     default: 0,
     required: true,
-  },
-  times: {
-    type: Number,
-    default: 0,
   },
 });
 

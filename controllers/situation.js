@@ -151,7 +151,8 @@ const situationController = {
   },
   submit: async (req, res) => {
     try {
-      const user = req.user.id;
+      console.log(req)
+      const user = req.body.userId;
       // console.log(user)
       const { marks, situationId } = req.body;
       const newMark = new Mark({

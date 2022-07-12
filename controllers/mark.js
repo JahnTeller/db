@@ -10,20 +10,20 @@ const markController = {
         if (orderBy === "asc") {
           marks = await Mark.find({ situation: situation })
             .sort({ marks: 1 })
-            .populate("situation", "name");
+            .populate("situation", "name").populate("userId", "username");
         } else if (orderBy === "desc") {
           marks = await Mark.find({ situation: situation })
             .sort({ marks: -1 })
-            .populate("situation", "name");
+            .populate("situation", "name").populate("userId", "username");
         } else {
           marks = await Mark.find({ situation: situation }).populate(
             "situation",
             "name"
-          );
+          ).populate("userId", "username");
         }
         // res.status(200).json(marks);
       } else {
-        marks = await Mark.find({}).populate("situation", "name");
+        marks = await Mark.find({}).populate("situation", "name").populate("userId", "username");
       }
       res.status(200).json(marks);
     } catch (error) {
