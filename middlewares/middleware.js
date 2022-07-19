@@ -20,7 +20,8 @@ const verifyToken = async (req, res, next) => {
 };
 
 const verifyAdmin = async (req, res, next) => {
-  const token = req.headers.token?.split(" ")[1];
+  const token = req.body.headers.token?.split(" ")[1];
+  console.log(req.headers)
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {

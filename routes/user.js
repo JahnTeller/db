@@ -5,4 +5,5 @@ router.post("/login", controller.login);
 router.post("/register", verifyAdmin, controller.register);
 router.get("/role", verifyToken, controller.getByRole);
 router.get("/", controller.getAll);
+router.post("/deleteuser/:id", verifyAdmin, controller.delete);
 module.exports = router;
